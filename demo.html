@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NanoClip — Lightweight Video Embedding Demo</title>
+    <title>AirClip — Lightweight Video Embedding Demo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -159,7 +159,7 @@
             margin-bottom: 0.8rem;
         }
         .compare-card .original { color: #f87171; }
-        .compare-card .nanoclip { color: var(--cyan); }
+        .compare-card .airclip { color: var(--cyan); }
         .compare-card video {
             width: 100%;
             display: block;
@@ -240,7 +240,7 @@
 
     <!-- Hero -->
     <div class="hero">
-        <h1><span>NanoClip</span></h1>
+        <h1><span>AirClip</span></h1>
         <p>Ultra-lightweight video embedding that blends into any webpage.<br>
         30 seconds of animation in ~60 KB — no player chrome, no buffering.</p>
     </div>
@@ -318,7 +318,7 @@
     <!-- Side-by-side comparison -->
     <div class="compare">
         <h2 class="section-title">Before / After</h2>
-        <p class="section-desc">Original 1080p MP4 vs NanoClip WebM. Can you tell the difference?</p>
+        <p class="section-desc">Original 1080p MP4 vs AirClip WebM. Can you tell the difference?</p>
 
         <div class="compare-grid">
             <div class="compare-card">
@@ -331,7 +331,7 @@
                 </div>
             </div>
             <div class="compare-card">
-                <h3 class="nanoclip">NanoClip WebM</h3>
+                <h3 class="airclip">AirClip WebM</h3>
                 <video controls muted loop playsinline preload="metadata">
                     <source src="test_output/WhatIsAQubit.webm" type="video/webm">
                 </video>
@@ -365,7 +365,7 @@
                 <strong>123 KB</strong> — small enough to embed anywhere without impacting page load.
             </p>
             <p>
-                This is the power of NanoClip: videos so small they behave like images.
+                This is the power of AirClip: videos so small they behave like images.
                 No lazy loading needed. No CDN required. Just drop them in and they blend.
             </p>
         </div>
@@ -389,14 +389,14 @@
 <span class="tag">&lt;/style&gt;</span></pre></div>
 
         <div class="code-block"><pre><span class="comment"># Convert any video</span>
-python -m nanoclip input.mp4
+python -m airclip input.mp4
 
 <span class="comment"># Custom settings</span>
-python -m nanoclip input.mp4 --fps 15 --crf 40 --height 480</pre></div>
+python -m airclip input.mp4 --fps 15 --crf 40 --height 480</pre></div>
     </div>
 
     <div class="footer">
-        NanoClip — 6 videos, 559 KB total. This entire page loads faster than a single hero image.
+        AirClip — 6 videos, 559 KB total. This entire page loads faster than a single hero image.
     </div>
 
     <script>

@@ -1,4 +1,4 @@
-# nanoclip
+# airclip
 
 Convert any video to an ultra-lightweight WebM that blends seamlessly into web pages.
 
@@ -6,7 +6,7 @@ Convert any video to an ultra-lightweight WebM that blends seamlessly into web p
 
 ## Why
 
-Embedding videos on the web usually means large files, slow loads, and visible player chrome. `nanoclip` solves this for animation and diagram content:
+Embedding videos on the web usually means large files, slow loads, and visible player chrome. `airclip` solves this for animation and diagram content:
 
 | Metric | Before | After |
 |--------|--------|-------|
@@ -39,25 +39,25 @@ Or have `ffmpeg` available on your PATH.
 
 ```bash
 # Single file
-python -m nanoclip video.mp4
+python -m airclip video.mp4
 
 # Entire directory
-python -m nanoclip videos/
+python -m airclip videos/
 
 # Custom settings
-python -m nanoclip video.mp4 --fps 15 --crf 42 --height 480
+python -m airclip video.mp4 --fps 15 --crf 42 --height 480
 
 # Fast mode (skip 2-pass, ~2x faster)
-python -m nanoclip video.mp4 --no-2pass
+python -m airclip video.mp4 --no-2pass
 
 # Output to a different directory
-python -m nanoclip videos/ --outdir dist/
+python -m airclip videos/ --outdir dist/
 ```
 
 ### As a library
 
 ```python
-from nanoclip import convert_lightweight
+from airclip import convert_lightweight
 
 result = convert_lightweight(
     "input.mp4",
@@ -132,27 +132,6 @@ document.querySelectorAll('video').forEach(v => observer.observe(v));
 ## Results
 
 Across 6 test videos: **~1.2 MB → ~93 KB average (12x compression)**. No visible quality loss in browser playback.
-
-### Side-by-side: Original vs NanoClip
-
-<table>
-<tr>
-<td align="center"><strong>Original MP4 — 675 KB</strong></td>
-<td align="center"><strong>NanoClip WebM — 62 KB (10.9x smaller)</strong></td>
-</tr>
-<tr>
-<td>
-
-<video src="test_output/WhatIsAQubit.mp4" width="400" controls muted loop></video>
-
-</td>
-<td>
-
-<video src="test_output/WhatIsAQubit.webm" width="400" controls muted loop></video>
-
-</td>
-</tr>
-</table>
 
 ## License
 

@@ -1,12 +1,12 @@
-"""nanoclip — Convert videos to ultra-lightweight web-embeddable format.
+"""airclip — Convert videos to ultra-lightweight web-embeddable format.
 
 Takes any video and produces a tiny WebM (VP9) that blends seamlessly
 into web pages. Optimized for animation/diagram content where
 solid backgrounds and limited motion allow extreme compression.
 
 Usage:
-    python -m nanoclip video.mp4                     # Single file
-    python -m nanoclip video.mp4 --fps 15 --crf 40   # Custom
+    python -m airclip video.mp4                     # Single file
+    python -m airclip video.mp4 --fps 15 --crf 40   # Custom
 """
 import argparse
 import os

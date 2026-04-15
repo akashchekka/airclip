@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nanoclip"
+name = "airclip"
 version = "0.1.0"
 description = "Convert any video to an ultra-lightweight WebM that blends seamlessly into web pages."
 readme = "README.md"
@@ -26,11 +26,11 @@ dependencies = []
 bundled-ffmpeg = ["imageio-ffmpeg"]
 
 [project.scripts]
-nanoclip = "nanoclip.nanoclip:main"
+airclip = "airclip.airclip:main"
 
 [project.urls]
-Homepage = "https://github.com/akashchekka/nanoclip"
-Repository = "https://github.com/akashchekka/nanoclip"
+Homepage = "https://github.com/akashchekka/airclip"
+Repository = "https://github.com/akashchekka/airclip"
 
 [tool.setuptools.packages.find]
-include = ["nanoclip*"]
+include = ["airclip*"]
