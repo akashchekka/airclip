@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanoClip — Lightweight Video Embedding Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --surface: #22243a;
+            --card: #282a42;
+            --text: #e2e4ed;
+            --muted: #9ca3bf;
+            --cyan: #5ce0c2;
+            --purple: #b48eed;
+            --blue: #6ea8fe;
+            --mono: 'JetBrains Mono', monospace;
+            --body: 'Inter', sans-serif;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* ── Hero ───────────────────────────────────── */
+        .hero {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .hero h1 span { color: var(--cyan); }
+        .hero p { color: var(--muted); font-size: 1.05rem; max-width: 600px; margin: 0 auto; }
+
+        /* ── Stats bar ──────────────────────────────── */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2.5rem auto;
+            padding: 1.2rem 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            max-width: 700px;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-family: var(--mono); font-size: 1.6rem; font-weight: 700; color: var(--cyan); }
+        .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.2rem; }
+
+        /* ── Section ────────────────────────────────── */
+        .section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .section-desc {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── Seamless video grid ────────────────────── */
+        .video-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* 
+         * THIS IS THE KEY: the video has NO border, NO controls,
+         * background matches the page, and it autoplays on scroll.
+         * It looks like a native animated diagram on the page.
+         */
+        .seamless-video {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--bg);  /* Match page background exactly */
+        }
+        .seamless-video video {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+            background: var(--bg);
+            cursor: pointer;
+        }
+        /* Controls only on hover */
+        .seamless-video video::-webkit-media-controls {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .seamless-video:hover video::-webkit-media-controls {
+            opacity: 1;
+        }
+        .video-label {
+            position: absolute;
+            bottom: 8px;
+            left: 10px;
+            font-family: var(--mono);
+            font-size: 0.65rem;
+            color: var(--muted);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .seamless-video:hover .video-label {
+            opacity: 1;
+        }
+        .video-size {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            color: var(--cyan);
+            background: rgba(26, 26, 46, 0.85);
+            padding: 2px 8px;
+            border-radius: 6px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .seamless-video:hover .video-size {
+            opacity: 1;
+        }
+
+        /* ── Comparison section ─────────────────────── */
+        .compare {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        .compare-card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .compare-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        .compare-card .original { color: #f87171; }
+        .compare-card .nanoclip { color: var(--cyan); }
+        .compare-card video {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+            background: var(--bg);
+            margin-bottom: 0.5rem;
+        }
+        .file-meta {
+            font-family: var(--mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+        .file-meta strong { color: var(--text); }
+
+        /* ── Inline embed demo ──────────────────────── */
+        .inline-demo {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        .prose {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+        .prose strong { color: var(--cyan); }
+        .inline-video {
+            float: right;
+            width: 280px;
+            margin: 0 0 1rem 1.5rem;
+            border-radius: 10px;
+            background: var(--bg);
+        }
+        .inline-video video {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+            background: var(--bg);
+        }
+
+        /* ── Code block ─────────────────────────────── */
+        .code-block {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+        .code-block pre {
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .code-block .comment { color: var(--muted); }
+        .code-block .tag { color: var(--blue); }
+        .code-block .attr { color: var(--purple); }
+        .code-block .val { color: var(--cyan); }
+
+        /* ── Footer ─────────────────────────────────── */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 700px) {
+            .video-grid { grid-template-columns: 1fr; }
+            .compare-grid { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; gap: 1rem; }
+            .inline-video { float: none; width: 100%; margin: 1rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1><span>NanoClip</span></h1>
+        <p>Ultra-lightweight video embedding that blends into any webpage.<br>
+        30 seconds of animation in ~60 KB — no player chrome, no buffering.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">62 KB</div>
+            <div class="stat-label">30s video</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">12x</div>
+            <div class="stat-label">avg compression</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">0</div>
+            <div class="stat-label">visible quality loss</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">559 KB</div>
+            <div class="stat-label">6 videos total</div>
+        </div>
+    </div>
+
+    <!-- Seamless Grid -->
+    <div class="section">
+        <h2 class="section-title">Seamless Embedding</h2>
+        <p class="section-desc">These animations blend into the page background. No borders, no player chrome. Controls appear on hover. Each is 60-120 KB.</p>
+
+        <div class="video-grid">
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/WhatIsAQubit.webm" type="video/webm">
+                </video>
+                <span class="video-label">What Is a Qubit</span>
+                <span class="video-size">62 KB</span>
+            </div>
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/BlochSphereScene.webm" type="video/webm">
+                </video>
+                <span class="video-label">Bloch Sphere</span>
+                <span class="video-size">123 KB</span>
+            </div>
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/SuperpositionScene.webm" type="video/webm">
+                </video>
+                <span class="video-label">Superposition</span>
+                <span class="video-size">82 KB</span>
+            </div>
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/GroversSearchScene.webm" type="video/webm">
+                </video>
+                <span class="video-label">Grover's Search</span>
+                <span class="video-size">68 KB</span>
+            </div>
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/BellStatesScene.webm" type="video/webm">
+                </video>
+                <span class="video-label">Bell States</span>
+                <span class="video-size">117 KB</span>
+            </div>
+            <div class="seamless-video">
+                <video muted loop playsinline preload="metadata">
+                    <source src="test_output/BB84Scene.webm" type="video/webm">
+                </video>
+                <span class="video-label">BB84 Cryptography</span>
+                <span class="video-size">107 KB</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side-by-side comparison -->
+    <div class="compare">
+        <h2 class="section-title">Before / After</h2>
+        <p class="section-desc">Original 1080p MP4 vs NanoClip WebM. Can you tell the difference?</p>
+
+        <div class="compare-grid">
+            <div class="compare-card">
+                <h3 class="original">Original MP4</h3>
+                <video controls muted loop playsinline preload="metadata">
+                    <source src="../docs/videos/WhatIsAQubit.mp4" type="video/mp4">
+                </video>
+                <div class="file-meta">
+                    <strong>675 KB</strong> &middot; 1080p &middot; 60fps &middot; H.264
+                </div>
+            </div>
+            <div class="compare-card">
+                <h3 class="nanoclip">NanoClip WebM</h3>
+                <video controls muted loop playsinline preload="metadata">
+                    <source src="test_output/WhatIsAQubit.webm" type="video/webm">
+                </video>
+                <div class="file-meta">
+                    <strong>62 KB</strong> &middot; 720p &middot; 24fps &middot; VP9 &middot; <span style="color:var(--cyan)">10.9x smaller</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inline text embed demo -->
+    <div class="inline-demo">
+        <h2 class="section-title">Inline with Text</h2>
+        <p class="section-desc">Videos small enough to float inside paragraphs — like images, but animated.</p>
+
+        <div class="prose" style="margin-top: 1rem;">
+            <div class="inline-video">
+                <video autoplay muted loop playsinline>
+                    <source src="test_output/BlochSphereScene.webm" type="video/webm">
+                </video>
+            </div>
+            <p>
+                A <strong>qubit</strong> can exist in a superposition of |0⟩ and |1⟩ simultaneously.
+                Every single-qubit state maps to a point on the surface of the <strong>Bloch sphere</strong>.
+                The north pole represents |0⟩, the south pole |1⟩, and the equator holds all equal
+                superpositions like |+⟩ and |−⟩.
+            </p>
+            <p>
+                Quantum gates are simply rotations on this sphere. An X gate flips north↔south.
+                A Hadamard rotates from the pole to the equator. The animation on the right is only
+                <strong>123 KB</strong> — small enough to embed anywhere without impacting page load.
+            </p>
+            <p>
+                This is the power of NanoClip: videos so small they behave like images.
+                No lazy loading needed. No CDN required. Just drop them in and they blend.
+            </p>
+        </div>
+    </div>
+
+    <!-- How to use -->
+    <div class="section">
+        <h2 class="section-title">How to Embed</h2>
+        <p class="section-desc">One HTML tag. Background matches automatically. No JavaScript needed.</p>
+
+        <div class="code-block"><pre><span class="comment">&lt;!-- Seamless: no controls, autoplay on scroll --&gt;</span>
+<span class="tag">&lt;video</span> <span class="attr">autoplay</span> <span class="attr">muted</span> <span class="attr">loop</span> <span class="attr">playsinline</span>
+       <span class="attr">style=</span><span class="val">"width:100%; background:#1a1a2e; border-radius:10px"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;source</span> <span class="attr">src=</span><span class="val">"animation.webm"</span> <span class="attr">type=</span><span class="val">"video/webm"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/video&gt;</span>
+
+<span class="comment">&lt;!-- With controls on hover (CSS) --&gt;</span>
+<span class="tag">&lt;style&gt;</span>
+  video::-webkit-media-controls { opacity: 0; transition: opacity 0.3s; }
+  video:hover::-webkit-media-controls { opacity: 1; }
+<span class="tag">&lt;/style&gt;</span></pre></div>
+
+        <div class="code-block"><pre><span class="comment"># Convert any video</span>
+python -m nanoclip input.mp4
+
+<span class="comment"># Custom settings</span>
+python -m nanoclip input.mp4 --fps 15 --crf 40 --height 480</pre></div>
+    </div>
+
+    <div class="footer">
+        NanoClip — 6 videos, 559 KB total. This entire page loads faster than a single hero image.
+    </div>
+
+    <script>
+        // Autoplay videos when they scroll into view
+        const videos = document.querySelectorAll('.seamless-video video, .inline-video video');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.play();
+                } else {
+                    entry.target.pause();
+                }
+            });
+        }, { threshold: 0.3 });
+        videos.forEach(v => observer.observe(v));
+
+        // Click to pause/play seamless videos
+        document.querySelectorAll('.seamless-video video').forEach(v => {
+            v.addEventListener('click', () => v.paused ? v.play() : v.pause());
+        });
+    </script>
+</body>
+</html>

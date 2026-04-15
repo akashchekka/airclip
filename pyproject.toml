@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nanoclip"
+version = "0.1.0"
+description = "Convert any video to an ultra-lightweight WebM that blends seamlessly into web pages."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Akash Chekka" }]
+keywords = ["video", "webm", "vp9", "compression", "web", "ffmpeg"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Multimedia :: Video :: Conversion",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = []
+
+[project.optional-dependencies]
+bundled-ffmpeg = ["imageio-ffmpeg"]
+
+[project.scripts]
+nanoclip = "nanoclip.nanoclip:main"
+
+[project.urls]
+Homepage = "https://github.com/akashchekka/nanoclip"
+Repository = "https://github.com/akashchekka/nanoclip"
+
+[tool.setuptools.packages.find]
+include = ["nanoclip*"]
