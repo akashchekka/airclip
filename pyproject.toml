@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "airclip"
-version = "0.1.0"
-description = "Convert any video to an ultra-lightweight WebM that blends seamlessly into web pages."
+version = "0.2.0"
+description = "Convert any video to ultra-lightweight WebM or transparent animated WebP for seamless web embedding."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 authors = [{ name = "Akash Chekka" }]
-keywords = ["video", "webm", "vp9", "compression", "web", "ffmpeg"]
+keywords = ["video", "webm", "webp", "vp9", "transparent", "compression", "web", "ffmpeg", "manim"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
